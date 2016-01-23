@@ -11,7 +11,7 @@ Status
 ------
 
 First experimental release, under development according to my own needs for it. 
-Requests and PR are more than welcome.
+Requests and PRs are more than welcome.
 
 
 Install
@@ -23,7 +23,7 @@ Install
 Usage
 -----
 
-`yurl` provides daisy-chainable methods for all the url components handles by
+`yurl` provides daisy-chainable methods for all the url components handled by
 `url.parse()`/`url.format()`.
 
     var YURL = require('yurl');
