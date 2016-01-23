@@ -2,16 +2,16 @@
 YURL
 ====
 
-`yurl` is a simple URL manipulation library for `nodejs`.
-It is a wrapper around the native `url` and `path` modules that adds support for daisy chaining,
-pathname resolution and query args manipulation.
+`yurl` is a simple URL manipulation library for `nodejs`. It is a wrapper 
+around the native `url` and `path` modules that adds support for daisy 
+chaining, pathname resolution and query args manipulation.
 
 
 Status
 ------
 
-First experimental release, under development according to my own needs for it. Requests and PR
-are more than welcome.
+First experimental release, under development according to my own needs for it. 
+Requests and PR are more than welcome.
 
 
 Install
@@ -23,10 +23,18 @@ Install
 Usage
 -----
 
-    var yurl = require('yurl');
-    
-    yurl('http://example.com/foo/bar').pathname('..', 'baz').format();  // http://example.com/foo/baz
+`yurl` provides daisy-chainable methods for all the url components handles by
+`url.parse()`/`url.format()`.
 
+    var YURL = require('yurl');
+
+    YURL('http://example.com/foo/bar')     // Wrap url
+      .pathname('..', 'baz')               // Sets pathname to /foo/baz
+      .port(8888)                          // Changes port to 8888
+      .format()                            // Serializes to string
+
+    // ==> http://example.com:8888/foo/baz
+    
 
 Test
 ----
