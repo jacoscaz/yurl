@@ -35,3 +35,7 @@ describe('YURL.prototype.pathname()', function() {
   });
   
 });
+
+describe('YURL.prototype.query()', function() {
+  
+});
