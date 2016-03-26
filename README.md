@@ -23,8 +23,8 @@ Install
 Usage
 -----
 
-`yurl` provides daisy-chainable methods for all the url components handled by
-`url.parse()`/`url.format()`.
+`yurl` provides daisy-chainable methods for all the url components 
+handled by `url.parse()`/`url.format()`.
 
     var YURL = require('yurl');
 
@@ -34,6 +34,10 @@ Usage
       .format()                            // Serializes to string
 
     // ==> http://example.com:8888/foo/baz
+
+These methods mutate the `yurl` instance they're called upon. 
+Use `.clone()` first to duplicate the original instance and mutate the 
+copy.
     
 
 Test
