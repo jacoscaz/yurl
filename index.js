@@ -148,7 +148,6 @@ YURL.prototype.query = function(args) {
   if (args === false) {
     return this.set({query: {}, href: null})
   }
-  this._parts.query = extend(this._parts.query, args);
-  return this;
+  return this.set({query: extend(this._parts.query || {}, args), href: null});
 }
 
