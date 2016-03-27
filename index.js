@@ -24,14 +24,16 @@ function deepCopy(source) {
   var keys, key, k;
   if (source && typeof source === 'object') {
     if (Array.isArray(source)) {
+      copy = [];
       for (k = 0; k < source.length; k++) {
         copy[k] = deepCopy(source[k]);
       }
     } else {
+      copy = {};
       keys = Object.keys(source);
       for (k = 0; k < keys.length; k++) {
         key = keys[k];
-        copy[k] = deepCopy(source[k]);
+        copy[key] = deepCopy(source[key]);
       }
     }
   }
