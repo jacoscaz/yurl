@@ -37,5 +37,14 @@ describe('YURL.prototype.pathname()', function() {
 });
 
 describe('YURL.prototype.query()', function() {
+
+  it('Should support multiple query params', function() {
   
+    var a = 'http://www.example.com/?a=foo';
+    var b = 'http://www.example.com/?a=foo&b=bar';
+
+    YURL(a).query({b: 'bar'}).format().should.equal(b);
+
+  }); 
+
 });

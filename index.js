@@ -148,8 +148,8 @@ YURL.prototype.auth = function(auth) {
 
 YURL.prototype.query = function(args) {
   if (args === false) {
-    return this.set({query: {}, href: null})
+    return this.set({query: {}, href: null, search: null})
   }
-  return this.set({query: extend(this._parts.query || {}, args), href: null});
+  return this.set({query: extend(this._parts.query || {}, args), href: null, search: null});
 }
 
