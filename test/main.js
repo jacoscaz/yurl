@@ -48,3 +48,17 @@ describe('YURL.prototype.query()', function() {
   }); 
 
 });
+
+describe('YURL.prototype.path()', function() {
+
+  it('Should set all path elements', function() {
+  
+    var a = 'http://www.example.com';
+    var p = '/foo/bar?thenaswer=42&magicnumber=17#frag';
+    var b = a + p;
+
+    YURL(a).path(p).format().should.equal(b);
+
+  });
+  
+});

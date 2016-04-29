@@ -117,7 +117,15 @@ YURL.prototype.path = function(path) {
     return this.set({pathname: null, path: null, href: null});
   }
   assert(typeof(path) === 'string', '`path` is not a string.');
-  return this.set({path: path, pathname: null, query: null, href: null});
+  var parts = url.parse(path, true);
+  return this.set({
+    path: parts.path, 
+    href: parts.href, 
+    search: parts.search, 
+    query: parts.query, 
+    hash: parts.hash, 
+    pathname: parts.pathname
+  });
 }
 
 YURL.prototype.search = function(search) {

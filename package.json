@@ -1,6 +1,6 @@
 {
   "name": "yurl",
-  "version": "1.0.6",
+  "version": "1.1.6",
   "description": "Yet another URL manipulation library supporting pathname resolution and query parsing",
   "keywords": [
     "url",
