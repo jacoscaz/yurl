@@ -12,7 +12,8 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "browserify": "browserify -s yurl index.js -o yurl.bundle.js"
   },
   "repository": "https://github.com/jacoscaz/node-yurl/node-yurl.git",
   "bugs": {
@@ -25,6 +26,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "browserify": "^13.0.0",
     "mocha": "^2.3.4",
     "should": "^8.1.1"
   }
