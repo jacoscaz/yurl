@@ -2,16 +2,7 @@
 YURL
 ====
 
-`yurl` is a simple URL manipulation library for `nodejs`. It is a wrapper 
-around the native `url` and `path` modules that adds support for daisy 
-chaining, pathname resolution and query args manipulation.
-
-
-Status
-------
-
-First experimental release, under development according to my own needs for it. 
-Requests and PRs are more than welcome.
+A URL manipulation library that offers support for daisy chaining, pathname resolution and query args manipulation.
 
 
 Install
@@ -23,21 +14,19 @@ Install
 Usage
 -----
 
-`yurl` provides daisy-chainable methods for all the url components 
-handled by `url.parse()`/`url.format()`.
+`yurl` provides daisy-chainable methods for all url parts handled by the `URL` class. 
 
     var YURL = require('yurl');
 
-    YURL('http://example.com/foo/bar')     // Wrap url
-      .pathname('..', 'baz')               // Sets pathname to /foo/baz
-      .port(8888)                          // Changes port to 8888
-      .format()                            // Serializes to string
+    YURL('http://example.com/foo/bar?a=24')   // Wraps url
+      .pathname('..', 'baz')                  // Sets pathname to /foo/baz
+      .port(8888)                             // Changes port to 8888
+      .query({a: null, b: 24})                // Drops and sets query params
+      .format()                               // Serializes to string
 
-    // ==> http://example.com:8888/foo/baz
+    // ==> http://example.com:8888/foo/baz?b=24
 
-These methods mutate the `yurl` instance they're called upon. 
-Use `.clone()` first to duplicate the original instance and mutate the 
-copy.
+These methods mutate the `YURL` instance they're called upon. Use `.clone()` first to duplicate the original instance and mutate the copy.
     
 
 Test
@@ -50,4 +39,3 @@ License
 -------
 
 MIT
-

@@ -107,25 +107,33 @@ class YURL {
     return this;
   }
   
+  _searchParam(key, value) {
+    if (value === null || value === undefined) {
+      this.parts.searchParams.delete(key);
+    } else {
+      if (Array.isArray(value)) {
+        for (let i = 0; i < value.length; i += 1) {
+          this.parts.searchParams.append(key, value[i]);
+        } 
+      } else {
+        this.parts.searchParams.append(key, value);
+      }
+    }
+  }
+
   _searchParams(paramsOrKey, value) {
     if (!paramsOrKey) {
       for (const key in this.parts.query) {
         this.parts.searchParams.delete(key);
       }
-    } else if (typeof(paramsOrKey) === 'object' && paramsOrKey !== null) {
-      for (const key in paramsOrKey) {
-        this.parts.searchParams.set(key, paramsOrKey[key]);
+    } else {
+      if (typeof(paramsOrKey) === 'string') {
+        this._searchParam(paramsOrKey, value);
       }
-    } else if (typeof(paramsOrKey) === 'string') {
-      if (value) {
-        if (!Array.isArray(value)) {
-          value = [value];
+      if (typeof(paramsOrKey) === 'object' && paramsOrKey !== null) {
+        for (const key in paramsOrKey) {
+          this._searchParam(key, paramsOrKey[key]);
         }
-        for (let i = 0; i < value.length; i += 1) {
-          this.parts.searchParams.append(paramsOrKey, value[i]);
-        }
-      } else {
-        this.parts.searchParams.delete(paramsOrKey);
       }
     }
     this._searchParamsToQuery();
