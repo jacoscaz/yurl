@@ -1,163 +1,153 @@
 
-var url = require('url');
-var path = require('path');
-var assert = require('assert');
+'use strict';
 
-function extend(target) {
-  var sources = Array.prototype.slice.call(arguments);
-  var source, s, keys, key, k;
-  for (s = 0; s < sources.length; s++) {
-    source = sources[s];
-    keys = Object.keys(source);
-    for (k = 0; k < keys.length; k++) {
-      key = keys[k];
-      if (source[key] !== undefined) {
-        target[key] = source[key];
-      }
-    }
-  }
-  return target;
+const URL = require('url').URL;
+const path = require('path');
+
+function nilToEmptyString(v) {
+  return (typeof(v) === 'undefined' || v === null) ? '' : v;
 }
 
-function deepCopy(source) {
-  var copy = source;
-  var keys, key, k;
-  if (source && typeof source === 'object') {
-    if (Array.isArray(source)) {
-      copy = [];
-      for (k = 0; k < source.length; k++) {
-        copy[k] = deepCopy(source[k]);
-      }
+class YURL {
+
+  constructor(str, base) {
+    this.parts = str instanceof YURL
+      ? this.parts = new URL(str.parts)
+      : new URL(str, base instanceof YURL ? base.parts : base);
+    this._searchParamsToQuery();
+  }
+
+  get(key) {
+    if (!this.parts.hasOwnProperty(key) || typeof(this.parts[key] === 'function')) {
+      throw new Error(`Invalid URL part: ${key}`);
+    }
+    return this.parts[key];
+  }
+
+  clone() {
+    return new YURL(this);
+  }
+
+  toString() {
+    return this.parts.toString();
+  }
+
+  toJSON() {
+    return this.parts.toJSON();
+  }
+
+  format() {
+    return this.toString();
+  }
+
+  static parse(str, base) {
+    return new YURL(str, base);
+  }
+
+  host(host) {
+    this.parts.host = host;
+    return this;
+  }
+  
+  hostname(hostname) {
+    this.parts.hostname = nilToEmptyString(hostname);
+    return this;
+  }
+  
+  port(port) {
+    this.parts.port = nilToEmptyString(port);
+    return this;
+  }
+  
+  pathname(pathname) {
+    const args = Array.prototype.slice.call(arguments);
+    if (args.length === 0 || !args[0]) {
+      this.parts.pathname = '';
     } else {
-      copy = {};
-      keys = Object.keys(source);
-      for (k = 0; k < keys.length; k++) {
-        key = keys[k];
-        copy[key] = deepCopy(source[key]);
+      args.unshift(this.parts.pathname || '/');
+      this.parts.pathname = path.posix.resolve.apply(path.posix, args);
+    }
+    return this;
+  }
+  
+  path(path) {
+    const [match, pathname, search, hash] = path.match(/(.*)\?(.*)\#(.*)/);
+    this.parts.pathname = nilToEmptyString(pathname);
+    this.parts.search = nilToEmptyString(search);
+    this.parts.hash = nilToEmptyString(hash);
+    this._searchParamsToQuery();
+    return this;
+  }
+  
+  search(search) {
+    search.charAt(0) != '?' && (search = '?' + search);
+    this.parts.search = nilToEmptyString(search);
+    return this;
+  }
+  
+  hash(hash) {
+    hash.charAt(0) != '#' && (hash = '#' + hash);
+    this.parts.hash = nilToEmptyString(hash);
+    return this;
+  }
+  
+  auth(auth) {
+    this.password(null);
+    this.username(auth);
+    return this;
+  }
+
+  username(username) {
+    this.parts.username = nilToEmptyString(username);
+    return this;
+  }
+
+  password(password) {
+    this.parts.password = nilToEmptyString(password);
+    return this;
+  }
+  
+  _searchParams(paramsOrKey, value) {
+    if (!paramsOrKey) {
+      for (const key in this.parts.query) {
+        this.parts.searchParams.delete(key);
+      }
+    } else if (typeof(paramsOrKey) === 'object' && paramsOrKey !== null) {
+      for (const key in paramsOrKey) {
+        this.parts.searchParams.set(key, paramsOrKey[key]);
+      }
+    } else if (typeof(paramsOrKey) === 'string') {
+      if (value) {
+        if (!Array.isArray(value)) {
+          value = [value];
+        }
+        for (let i = 0; i < value.length; i += 1) {
+          this.parts.searchParams.append(paramsOrKey, value[i]);
+        }
+      } else {
+        this.parts.searchParams.delete(paramsOrKey);
       }
     }
+    this._searchParamsToQuery();
+    return this;
   }
-  return copy;
-}
 
-function YURL(urlString, parse, slashes) {
-  if (!(this instanceof YURL)) {
-    return new YURL(urlString, parse, slashes);
+  _searchParamsToQuery() {
+    this.parts.query = {};
+    for (const pair of this.parts.searchParams) {
+      if (!this.parts.query[pair[0]]) {
+        this.parts.query[pair[0]] = []; 
+      }
+      this.parts.query[pair[0]].push(pair[1]);
+    }
+    return this;
   }
-  assert(typeof(urlString) === 'string', 'urlString is not an object.');
-  this._parse = parse !== false;
-  this._slashes = slashes !== false;
-  this._parts = url.parse(urlString, this._parse, this._slashes);
+
+  query() {
+    this._searchParams(...arguments);
+    return this;
+  }
+  
 }
 
 module.exports = YURL;
-
-YURL.prototype.set = function(parts) {
-  assert(typeof(parts) === 'object', '`parts` is not an object.');
-  extend(this._parts, parts);
-  return this;
-}
-
-YURL.prototype.format = function() {
-  return url.format(this._parts);  
-}
-
-YURL.prototype.clone = function() {
-  return new YURL(this.format(), this._parse, this._slashes);
-}
-
-YURL.prototype.host = function(host) {
-  if (host === false) {
-    return this.set({host: null, hostname: null, port: null, href: null});
-  }
-  assert(typeof(host) === 'string', '`host is not a string.');
-  return this.set({host: host, hostname: null, port: null, href: null});
-}
-
-YURL.prototype.hostname = function(hostname) {
-  if (hostname === false) {
-    return this.set({hostname: null, host: null, href: null});
-  }
-  assert(typeof(hostname) === 'string', '`hostname` is not a string.');
-  return this.set({hostname: hostname, host: null, href: null});
-}
-
-YURL.prototype.protocol = function(protocol) {
-  if (protocol === false) {
-    return this.set({protocol: null, href: null});
-  }
-  assert(typeof(protocol) === 'string', '`protocol` is not a string.');
-  return this.set({protocol: protocol, href: null});
-}
-
-YURL.prototype.slashes = function(slashes) {
-  assert(typeof(slashes) === 'boolean', '`slashes` is not a boolean value.');
-  return this.set({slashes: slashes, href: null});
-}
-
-YURL.prototype.port = function(port) {
-  if (port === false) {
-    return this.set({port: null, host: null, href: null});
-  }
-  assert(typeof(port) === 'number', '`port` is not a number.');
-  return this.set({port: port, host: null, href: null});
-}
-
-YURL.prototype.pathname = function(pathname) {
-  if (pathname === false) {
-    return this.set({pathname: null, path: null, href: null});
-  }
-  var args = Array.prototype.slice.call(arguments);
-  args.unshift(this._parts.pathname || '/');
-  return this.set({pathname: path.posix.resolve.apply(path.posix, args), path: null, href: null});
-}
-
-YURL.prototype.path = function(path) {
-  if (path === false) {
-    return this.set({pathname: null, path: null, href: null});
-  }
-  assert(typeof(path) === 'string', '`path` is not a string.');
-  var parts = url.parse(path, true);
-  return this.set({
-    path: parts.path, 
-    href: parts.href, 
-    search: parts.search, 
-    query: parts.query, 
-    hash: parts.hash, 
-    pathname: parts.pathname
-  });
-}
-
-YURL.prototype.search = function(search) {
-  if (search === false) {
-    return this.set({search: null, query: null, href: null});
-  }
-  assert(typeof(search) === 'string', '`search` is not a string.');
-  search.charAt(0) != '?' && (search = '?' + search);
-  return this.set({search: search});
-}
-
-YURL.prototype.hash = function(hash) {
-  if (hash === false) {
-    return this.set({hash: null, href: null});
-  }
-  assert(typeof(hash) === 'string', '`hash` is not a string.');
-  hash.charAt(0) != '#' && (hash = '#' + hash);
-  return this.set({hash: hash, href: null});
-}
-
-YURL.prototype.auth = function(auth) {
-  if (auth === false) {
-    return this.set({auth: null, href: null});
-  }
-  assert(typeof(auth) === 'string', '`auth` is not a string.');
-  return this.set({auth: auth, href: null});
-}
-
-YURL.prototype.query = function(args) {
-  if (args === false) {
-    return this.set({query: {}, href: null, search: null})
-  }
-  return this.set({query: extend(this._parts.query || {}, args), href: null, search: null});
-}
-

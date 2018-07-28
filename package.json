@@ -1,6 +1,6 @@
 {
   "name": "yurl",
-  "version": "1.1.6",
+  "version": "2.0.3",
   "description": "Yet another URL manipulation library supporting pathname resolution and query parsing",
   "keywords": [
     "url",
@@ -12,8 +12,7 @@
   ],
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
-    "browserify": "browserify -s yurl index.js -o yurl.bundle.js"
+    "test": "mocha"
   },
   "repository": "https://github.com/jacoscaz/node-yurl/node-yurl.git",
   "bugs": {
@@ -22,12 +21,11 @@
   "author": "Jacopo Scazzosi <me@jacoscaz.com>",
   "license": "MIT",
   "engines": {
-    "node": ">= 4.0.0"
+    "node": ">= 8.0.0"
   },
   "dependencies": {},
   "devDependencies": {
-    "browserify": "^13.0.0",
-    "mocha": "^2.3.4",
-    "should": "^8.1.1"
+    "mocha": "^5.2.0",
+    "should": "^13.2.2"
   }
 }
