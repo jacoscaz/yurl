@@ -86,3 +86,19 @@ describe('new YURL.prototype.path()', () => {
   
 });
 
+describe('new YURL.prototype.port()', () => {
+
+  it('Should set the port', () => {
+    const a = 'http://www.example.com/';
+    const b = 'http://www.example.com:8080/';
+    new YURL(a).port(8080).format().should.equal(b);
+  });
+
+  it('Should remove the port', () => {
+    const a = 'http://www.example.com:8080/';
+    const b = 'http://www.example.com/';
+    new YURL(a).port().format().should.equal(b);
+  });
+  
+});
+
