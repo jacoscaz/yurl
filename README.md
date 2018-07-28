@@ -2,6 +2,8 @@
 YURL
 ====
 
+[![Build Status](https://travis-ci.org/jacoscaz/node-yurl.svg?branch=master)](https://travis-ci.org/jacoscaz/node-yurl)
+
 A URL manipulation library that offers support for daisy chaining, pathname resolution and query args manipulation.
 
 
