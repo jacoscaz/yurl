@@ -1,23 +1,28 @@
 {
   "name": "yurl",
   "version": "2.0.3",
-  "description": "Yet another URL manipulation library supporting pathname resolution and query parsing",
+  "description": "A URL manipulation library that offers support for daisy chaining, pathname resolution and query args manipulation.",
   "keywords": [
     "url",
     "manipulation",
     "query",
     "arguments",
     "path",
-    "resolution"
+    "resolution",
+    "whatwg",
+    "relative",
+    "absolute"
   ],
-  "main": "index.js",
+  "main": "YURL.js",
   "scripts": {
     "test": "mocha"
   },
-  "repository": "https://github.com/jacoscaz/node-yurl/node-yurl.git",
-  "bugs": {
-    "url": "https://github.com/jacoscaz/node-yurl/issues"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jacoscaz/node-yurl/node-yurl"
   },
+  "homepage": "https://github.com/jacoscaz/node-yurl",
+  "bugs": "https://github.com/jacoscaz/node-yurl/issues",
   "author": "Jacopo Scazzosi <me@jacoscaz.com>",
   "license": "MIT",
   "engines": {
