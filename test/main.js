@@ -148,4 +148,15 @@ describe('YURL', () => {
     
   });
 
+
+  describe('new YURL.prototype.protocol()', () => {
+
+    it('Should change the protocol', () => {
+      const a = 'http://www.example.com/';
+      const b = 'https://www.example.com/';
+      new YURL(a).protocol('https').format().should.equal(b);
+    });
+    
+  });
+
 });

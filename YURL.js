@@ -2,13 +2,18 @@
 'use strict';
 
 if (typeof(URL) === 'undefined') {
-  throw new Error('Missing URL implementation: https://developer.mozilla.org/en-US/docs/Web/API/URL');
+  throw new Error(`
+    Missing URL implementation: https://developer.mozilla.org/en-US/docs/Web/API/URL
+
+    Consider using a polyfill or including https://www.npmjs.com/package/whatwg-url
+    in your project.
+  `);
 }
 
 const resolvePathname = require('./lib/resolvePathname');
 
 function nilToEmptyString(v) {
-  return (typeof(v) === 'undefined' || v === null) ? '' : v;
+  return (typeof(v) === 'undefined' || v === null || v === '') ? '' : v;
 }
 
 class YURL {
@@ -157,6 +162,11 @@ class YURL {
 
   query() {
     this._searchParams(...arguments);
+    return this;
+  }
+
+  protocol(protocol) {
+    this.parts.protocol = nilToEmptyString(protocol);
     return this;
   }
   
