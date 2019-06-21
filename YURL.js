@@ -1,8 +1,11 @@
 
 'use strict';
 
-const URL = require('url').URL;
-const path = require('path');
+if (typeof(URL) === 'undefined') {
+  throw new Error('Missing URL implementation: https://developer.mozilla.org/en-US/docs/Web/API/URL');
+}
+
+const resolvePathname = require('./lib/resolvePathname');
 
 function nilToEmptyString(v) {
   return (typeof(v) === 'undefined' || v === null) ? '' : v;
@@ -59,22 +62,23 @@ class YURL {
     return this;
   }
   
-  pathname(pathname) {
-    const args = Array.prototype.slice.call(arguments);
-    if (args.length === 0 || !args[0]) {
-      this.parts.pathname = '';
+  pathname(to) {
+    if (!to) {
+      this.parts.pathname = '/';
     } else {
-      args.unshift(this.parts.pathname || '/');
-      this.parts.pathname = path.posix.resolve.apply(path.posix, args);
+      this.parts.pathname = resolvePathname(
+        to,
+        this.parts.pathname || '/',
+      );
     }
     return this;
   }
   
   path(path) {
-    const [match, pathname, search, hash] = path.match(/(.*)\?(.*)\#(.*)/);
-    this.parts.pathname = nilToEmptyString(pathname);
-    this.parts.search = nilToEmptyString(search);
-    this.parts.hash = nilToEmptyString(hash);
+    const match = path.match(/((?:\/)[^?]*)(?:\?([^#]*))?(?:\#(.*))?/);
+    this.parts.pathname = nilToEmptyString(match[1]);
+    this.parts.search = nilToEmptyString(match[2]);
+    this.parts.hash = nilToEmptyString(match[3]);
     this._searchParamsToQuery();
     return this;
   }

@@ -50,7 +50,7 @@ The `clone()` method returns a deep copy of the current `YURL` instance. All oth
 
 ### Pathname resolution
 
-The `pathname()` method supports both absolute and relative pathnames, using the native `path.posix.resolve()` method to resolve relative pathnames based on the current one.
+The `pathname()` method supports trailing slashes and both absolute and relative pathnames.
 
 ```js
 const example = new YURL('http://example.com');
@@ -59,9 +59,9 @@ example.parts.pathname === '/';               // true
 example.pathname('/foo/bar');
 example.parts.pathname === '/foo/bar';        // true
 example.pathname('../baz');
-example.parts.pathname === '/foo/baz';        // true
-example.pathname('..', '..', 'baz');
 example.parts.pathname === '/baz';            // true
+example.pathname('/baz/');
+example.parts.pathname === '/baz/';           // true
 ```
 
 ### Query params
