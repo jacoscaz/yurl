@@ -2,26 +2,25 @@
  * What follows has been directly extracted from the `resolve-pathname` module,
  * written by Michael Jackson and MIT-licensed. All credit goes to the original
  * author!
- * 
+ *
  * GitHub repo: https://github.com/mjackson/resolve-pathname
  * Original source: https://github.com/mjackson/resolve-pathname/blob/20152400021377da9aa5e25fc0846ebe2d17fdcb/modules/index.js
  */
 
-function isAbsolute(pathname) {
+const isAbsolute = (pathname: string): boolean => {
   return pathname.charAt(0) === '/';
-}
+};
 
 // About 1.5x faster than the two-arg version of Array#splice()
-function spliceOne(list, index) {
-  for (var i = index, k = i + 1, n = list.length; k < n; i += 1, k += 1) {
+const spliceOne = (list: any[], index: number): void => {
+  for (let i = index, k = i + 1, n = list.length; k < n; i += 1, k += 1) {
     list[i] = list[k];
   }
-
   list.pop();
-}
+};
 
 // This implementation is based heavily on node's url.parse
-function resolvePathname(to, from) {
+export const resolvePathname = (to: string, from?: string): string => {
   if (from === undefined) from = '';
 
   var toParts = (to && to.split('/')) || [];
@@ -76,9 +75,7 @@ function resolvePathname(to, from) {
 
   var result = fromParts.join('/');
 
-  if (hasTrailingSlash && result.substr(-1) !== '/') result += '/';
+  if (hasTrailingSlash && result.slice(-1) !== '/') result += '/';
 
   return result;
 }
-
-module.exports = resolvePathname;

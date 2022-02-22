@@ -2,21 +2,25 @@
 YURL
 ====
 
-[![Build Status](https://travis-ci.org/jacoscaz/node-yurl.svg?branch=master)](https://travis-ci.org/jacoscaz/node-yurl)
-
-A URL manipulation library that offers support for daisy chaining, pathname resolution and query args manipulation.
+A daisy-chaining URL manipulation library. As of v4.0.0, the library has been
+ported to TypeScript.
 
 Usage
 -----
 
-Modern versions of Node.js ship with a native implementation of the [WHATWG URL interface](https://developer.mozilla.org/en-US/docs/Web/API/URL) in the form of the `URL` class exported by the [url](https://nodejs.org/api/url.html) module.
+Modern versions of Node.js ship with a native implementation of the
+[WHATWG URL interface][u1] in the form of the `URL` class exported by the
+[url](https://nodejs.org/api/url.html) module.
 
-YURL builds upon such interface by implementing dedicated modifier methods for each `URL` property, adding a few bits of useful logic here and there.
+`yurl` builds upon such interface by implementing dedicated modifier methods
+for each `URL` property, adding a few bits of useful logic here and there.
+
+[u1]: https://developer.mozilla.org/en-US/docs/Web/API/URL
 
 ### Example
 
 ```js
-const YURL = require('yurl');
+import YURL from 'yurl';
 
 new YURL('http://example.com/foo/bar?a=24')
     .pathname('..', 'baz')                  // Resolves pathname to /foo/baz

@@ -1,6 +1,6 @@
 {
   "name": "yurl",
-  "version": "3.0.1",
+  "version": "4.0.0",
   "description": "A URL manipulation library that offers support for daisy chaining, pathname resolution and query args manipulation.",
   "keywords": [
     "url",
@@ -11,30 +11,36 @@
     "resolution",
     "whatwg",
     "relative",
-    "absolute"
+    "absolute",
+    "daisy",
+    "chain",
+    "typescript"
   ],
-  "main": "YURL.js",
+  "main": "dist/YURL.js",
   "files": [
-    "YURL.js",
-    "lib/*"
+    "dist/**/*.js",
+    "dist/**/*.d.ts"
   ],
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jacoscaz/node-yurl/node-yurl"
+    "url": "git+https://github.com/jacoscaz/yurl.git"
   },
-  "homepage": "https://github.com/jacoscaz/node-yurl",
-  "bugs": "https://github.com/jacoscaz/node-yurl/issues",
-  "author": "Jacopo Scazzosi <me@jacoscaz.com>",
+  "homepage": "https://github.com/jacoscaz/yurl",
+  "bugs": "https://github.com/jacoscaz/yurl/issues",
+  "author": "Jacopo Scazzosi <jacopo@scazzosi.com>",
   "license": "MIT",
   "engines": {
-    "node": ">= 8.0.0"
+    "node": ">= 12.0.0"
   },
-  "dependencies": {},
   "devDependencies": {
-    "mocha": "^5.2.0",
-    "should": "^13.2.2"
+    "@types/mocha": "^9.1.0",
+    "@types/node": "^17.0.19",
+    "mocha": "^9.2.1",
+    "ts-node": "^10.5.0",
+    "typescript": "^4.5.5"
   }
 }

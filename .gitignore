@@ -35,3 +35,7 @@ node_modules
 # IDEA
 .idea
 
+# typescript
+dist
+
+
