@@ -1,5 +1,5 @@
 
-import YURL from '..';
+import { YURL } from '..';
 import { strictEqual, deepEqual } from 'assert'
 
 describe('YURL', () => {
@@ -194,6 +194,31 @@ describe('YURL', () => {
       deepEqual(yurl.get('href'), href);
     });
 
+  });
+
+
+  describe('new YURL.prototype.username()', () => {
+    it('Should set the username', () => {
+      const a = 'http://www.example.com/';
+      const b = 'http://foobar@www.example.com/';
+      strictEqual(new YURL(a).username('foobar').format(), b);
+    });
+  });
+
+  describe('new YURL.prototype.password()', () => {
+    it('Should set the password', () => {
+      const a = 'http://www.example.com/';
+      const b = 'http://:foobar@www.example.com/';
+      strictEqual(new YURL(a).password('foobar').format(), b);
+    });
+  });
+
+  describe('new YURL.prototype.auth()', () => {
+    it('Should set the auth', () => {
+      const a = 'http://www.example.com/';
+      const b = 'http://foobarfoobarfoobar@www.example.com/';
+      strictEqual(new YURL(a).auth('foobarfoobarfoobar').format(), b);
+    });
   });
 
 });

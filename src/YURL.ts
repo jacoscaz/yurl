@@ -3,7 +3,7 @@ import { URL, URLProps } from './URL';
 import { nilToEmptyString, searchParamsToObj } from './utils';
 import { resolvePathname } from './resolvePathname';
 
-class YURL {
+export class YURL {
 
   private readonly parts: URL;
 
@@ -191,5 +191,3 @@ class YURL {
   }
 
 }
-
-export default YURL;

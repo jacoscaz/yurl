@@ -19,8 +19,8 @@ for each `URL` property, adding a few bits of useful logic here and there.
 
 ### Example
 
-```js
-import YURL from 'yurl';
+```typescript
+import { YURL } from 'yurl';
 
 new YURL('http://example.com/foo/bar?a=24')
     .pathname('..', 'baz')                  // Resolves pathname to /foo/baz
@@ -33,8 +33,16 @@ new YURL('http://example.com/foo/bar?a=24')
 
 ### Installation
 
-```
+```shell
 npm install yurl
+```
+
+```typescript
+import { YURL } from 'yurl';
+```
+
+```javascript
+const { YURL } = require('yurl');
 ```
 
 ### Parts
